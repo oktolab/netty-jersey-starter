@@ -11,12 +11,19 @@ import org.slf4j.LoggerFactory;
 public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ExceptionMapperProvider.class);
+	private static final String RESPONSE_ERROR_TYPE = "text/plain";
+	private static final String MSG_INTERNAL_SERVER_ERROR = "Internal server error.";
 	
 	@Override
-	public Response toResponse(Throwable ex) {
-		LOG.debug("Erro na requisição Rest.", ex);
-		return Response.status(404).entity(ex.getMessage()).type("text/plain")
+	public Response toResponse(final Throwable ex) {
+		final Throwable realCause = getRealCause(ex);
+		LOG.debug(MSG_INTERNAL_SERVER_ERROR, realCause);
+		return Response.status(500).entity(realCause.getMessage()).type(RESPONSE_ERROR_TYPE)
 				.build();
+	}
+
+	private Throwable getRealCause(Throwable ex) {
+		return ex.getCause() != null ? getRealCause(ex.getCause()) : ex;
 	}
 
 }
