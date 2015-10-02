@@ -10,6 +10,7 @@ import org.apache.commons.lang.ArrayUtils;
 import br.com.oktolab.netflixoss.nettyrest.module.KaryonJerseyModuleImpl;
 
 import com.google.inject.Module;
+import com.netflix.config.ConfigurationManager;
 import com.netflix.config.DynamicPropertyFactory;
 
 public class ApplicationBootstrap {
@@ -52,9 +53,14 @@ public class ApplicationBootstrap {
 	 */
 	protected static Module[] defaultModules() {
 		return new Module[]{
-				new ShutdownModule(),
+				getShutdownModule(),
 				new KaryonJerseyModuleImpl(),
 		        new KaryonServoModule()};
+	}
+
+	private static Module getShutdownModule() {
+		int shutdownPort = ConfigurationManager.getConfigInstance().getInt("shutdown.port", 7002);
+		return (Module) new ShutdownModule(shutdownPort){};
 	}
 	
 }
