@@ -15,16 +15,17 @@ import org.slf4j.LoggerFactory;
 
 import br.com.oktolab.netflixoss.nettyrest.provider.annotation.BeanParam;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.sun.jersey.api.model.Parameter;
-import com.sun.jersey.core.spi.component.ComponentContext;
-import com.sun.jersey.core.spi.component.ComponentScope;
-import com.sun.jersey.spi.inject.Injectable;
-import com.sun.jersey.spi.inject.InjectableProvider;
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
+//import com.sun.jersey.api.model.Parameter;
+//import com.sun.jersey.core.spi.component.ComponentContext;
+//import com.sun.jersey.core.spi.component.ComponentScope;
+//import com.sun.jersey.spi.container.WebApplication;
+//import com.sun.jersey.spi.inject.Injectable;
+//import com.sun.jersey.spi.inject.InjectableProvider;
 
-@Provider
-public class RestMessageGetProvider implements InjectableProvider<BeanParam, Parameter> {
+//@Provider
+public class RestMessageGetProvider {} /*implements InjectableProvider<BeanParam, Parameter> {
 	
 	private static final String MSG_ERROR_QUERY_PARAMS = "Erro ao tentar converter QueryParameters na classe '%s'. Params: '%s'.";
 
@@ -32,6 +33,7 @@ public class RestMessageGetProvider implements InjectableProvider<BeanParam, Par
 
 	@javax.ws.rs.core.Context
     private UriInfo uriInfo;
+	WebApplication
 	
 	@Override
 	public ComponentScope getScope() {
@@ -89,3 +91,4 @@ public class RestMessageGetProvider implements InjectableProvider<BeanParam, Par
 	}
 
 }
+*/
