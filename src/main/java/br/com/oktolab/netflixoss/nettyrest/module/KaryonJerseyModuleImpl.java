@@ -1,10 +1,10 @@
 package br.com.oktolab.netflixoss.nettyrest.module;
 
 import static com.netflix.config.ConfigurationManager.getConfigInstance;
-import netflix.karyon.jersey.blocking.KaryonJerseyModule;
+import netflix.karyon.jersey.blocking.KaryonJersey2Module;
 import br.com.oktolab.netflixoss.nettyrest.ConfigurationConstants;
 
-public class KaryonJerseyModuleImpl extends KaryonJerseyModule {
+public class KaryonJerseyModuleImpl extends KaryonJersey2Module {
 	
 //	private static final Logger LOG = LoggerFactory.getLogger(KaryonJerseyModuleImpl.class);
 	
