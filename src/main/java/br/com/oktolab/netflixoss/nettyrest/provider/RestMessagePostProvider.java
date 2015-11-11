@@ -24,8 +24,8 @@ import com.google.gson.GsonBuilder;
 @Provider
 public class RestMessagePostProvider implements MessageBodyWriter<Object>, MessageBodyReader<Object> {
 
-//	"yyyy-MM-dd HH:mm:ss Z" || yyyy-MM-ddTHH:mm:ssZ || dd/MM/yyyy HH:mm:ss
-    private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+//    private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 	private Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT).create();
 
     @Override
