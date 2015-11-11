@@ -53,7 +53,7 @@ public class ApplicationBootstrap {
 	 */
 	protected static Module[] defaultModules() {
 		return new Module[]{
-				getShutdownModule(),
+//				getShutdownModule(),
 				new KaryonJerseyModuleImpl(),
 		        new KaryonServoModule()};
 	}
