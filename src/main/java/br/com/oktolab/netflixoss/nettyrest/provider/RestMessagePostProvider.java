@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -26,7 +27,10 @@ public class RestMessagePostProvider implements MessageBodyWriter<Object>, Messa
 
 //    private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-	private Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT).create();
+	private Gson gson = new GsonBuilder()
+								.setDateFormat(DATE_FORMAT)
+								.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
+								.create();
 
     @Override
     public long getSize(Object t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
