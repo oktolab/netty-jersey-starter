@@ -15,7 +15,7 @@ public class HystrixContextFilter implements ContainerRequestFilter, ContainerRe
 
 	@Override
 	public void filter(final ContainerRequestContext requestContext) throws IOException {
-		HystrixRequestContext.initializeContext();
+//		HystrixRequestContext.initializeContext();
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class HystrixContextFilter implements ContainerRequestFilter, ContainerRe
 			ContainerResponseContext responseContext) throws IOException {
 		final HystrixRequestContext context = HystrixRequestContext.getContextForCurrentThread();
 		if (context != null) {
-			context.shutdown();
+//			context.shutdown();
 		}
 	}
 
