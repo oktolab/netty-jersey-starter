@@ -1,5 +1,7 @@
 package br.com.oktolab.netflixoss.nettyrest.provider;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.oktolab.netflixoss.nettyrest.provider.annotation.BeanQueryParam;
+import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonDateTypeAdapter;
+import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTimeTypeAdapter;
+import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonZonedDateTimeTypeAdapter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -79,7 +84,13 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
     
     private static final class BeanQueryParamValueFactory extends AbstractContainerRequestValueFactory<Object> {
     	
-    	private static Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateTypeAdapter()).create();
+    	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    	private static final Gson gson = new GsonBuilder()
+    								.setDateFormat(DATE_FORMAT)
+    								.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
+    								.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
+    								.registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTimeTypeAdapter())
+    								.create();
     	
         private final Parameter parameter;
         private final ServiceLocator locator;
