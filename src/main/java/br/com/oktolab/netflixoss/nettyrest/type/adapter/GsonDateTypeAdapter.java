@@ -1,4 +1,4 @@
-package br.com.oktolab.netflixoss.nettyrest.provider;
+package br.com.oktolab.netflixoss.nettyrest.type.adapter;
 
 import java.lang.reflect.Type;
 import java.text.DateFormat;
