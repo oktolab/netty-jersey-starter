@@ -30,51 +30,11 @@
 	</build>
 
 	<dependencies>
-		<!-- <dependency> -->
-		<!-- <groupId>io.netty</groupId> -->
-		<!-- <artifactId>netty-tcnative</artifactId> -->
-		<!-- <version>1.1.33.Fork4</version> -->
-		<!-- <classifier>${os.detected.classifier}</classifier> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>io.netty</groupId> -->
-		<!-- <artifactId>netty-transport-native-epoll</artifactId> -->
-		<!-- <version>4.0.25.Final</version> -->
-		<!-- <classifier>${os.detected.classifier}</classifier> -->
-		<!-- </dependency> -->
-
-
-
-		<!-- SERVER -->
-		<!-- <dependency> segregado em multiplos modulos -->
-		<!-- <groupId>io.netty</groupId> -->
-		<!-- <artifactId>netty</artifactId> -->
-		<!-- <version>3.10.3.Final</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.apache.tomcat</groupId> -->
-		<!-- <artifactId>tomcat-jni</artifactId> -->
-		<!-- <version>8.0.8</version> -->
-		<!-- </dependency> -->
-
-
-
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-handler</artifactId>
 			<version>4.0.25.Final</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>com.sun.jersey</groupId> -->
-		<!-- <artifactId>jersey-core</artifactId> -->
-		<!-- <version>1.18.1</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.sun.jersey</groupId> -->
-		<!-- <artifactId>jersey-server</artifactId> -->
-		<!-- <version>1.18.1</version> -->
-		<!-- </dependency> -->
-		<!-- REACTIVE -->
 		<dependency>
 			<groupId>io.reactivex</groupId>
 			<artifactId>rxjava</artifactId>
@@ -84,6 +44,27 @@
 			<groupId>io.reactivex</groupId>
 			<artifactId>rxnetty</artifactId>
 			<version>0.4.7</version>
+		</dependency>
+		<!-- GOOGLE -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
 		</dependency>
 		<!-- NETFLIX CORE -->
 		<dependency>
@@ -101,13 +82,6 @@
 			<artifactId>governator</artifactId>
 			<version>1.3.3</version>
 		</dependency>
-		<!-- NETFLIX KARYON -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.netflix.karyon</groupId> -->
-		<!-- <artifactId>karyon2-jersey-blocking</artifactId> -->
-		<!-- <version>2.8.0-SNAPSHOT</version> TODO -->
-		<!-- <version>${karyon2.version}</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>br.com.oktolab</groupId>
 			<artifactId>karyon2-jersey2-blocking-module</artifactId>
@@ -133,43 +107,12 @@
 			<artifactId>karyon2-eureka</artifactId>
 			<version>${karyon2.version}</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>com.netflix.karyon</groupId> -->
-		<!-- <artifactId>karyon2-admin</artifactId> -->
-		<!-- <version>2.7.1</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.netflix.karyon</groupId> -->
-		<!-- <artifactId>karyon2-admin-web</artifactId> -->
-		<!-- <version>2.7.1</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
 			<version>1.9.13</version>
 		</dependency>
 
-		<!-- GOOGLE -->
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-multibindings</artifactId>
-			<version>3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>18.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.3.1</version>
-		</dependency>
 		<!-- COMMON -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -187,7 +130,7 @@
 			<version>2.4</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
+			<groupId>commons-lang</groupId><!-- TODO versão 3 -->
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
