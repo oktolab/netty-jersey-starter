@@ -1,5 +1,6 @@
 package br.com.oktolab.netflixoss.nettyrest.provider;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import br.com.oktolab.netflixoss.nettyrest.provider.annotation.BeanQueryParam;
 import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonDateTypeAdapter;
 import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTimeTypeAdapter;
+import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTypeAdapter;
 import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonZonedDateTimeTypeAdapter;
 
 import com.google.gson.Gson;
@@ -88,6 +90,7 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
     	private static final Gson gson = new GsonBuilder()
     								.setDateFormat(DATE_FORMAT)
     								.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
+    								.registerTypeAdapter(LocalDate.class, new GsonLocalDateTypeAdapter())
     								.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
     								.registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTimeTypeAdapter())
     								.create();

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -22,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 
 import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonDateTypeAdapter;
 import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTimeTypeAdapter;
+import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTypeAdapter;
 import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonZonedDateTimeTypeAdapter;
 
 import com.google.gson.Gson;
@@ -35,6 +37,7 @@ public class RestMessagePostProvider implements MessageBodyWriter<Object>, Messa
 	private static final Gson gson = new GsonBuilder()
 								.setDateFormat(DATE_FORMAT)
 								.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
+								.registerTypeAdapter(LocalDate.class, new GsonLocalDateTypeAdapter())
 								.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
 								.registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTimeTypeAdapter())
 								.create();
