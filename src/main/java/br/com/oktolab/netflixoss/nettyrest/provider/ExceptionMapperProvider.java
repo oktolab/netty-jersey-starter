@@ -1,7 +1,6 @@
 package br.com.oktolab.netflixoss.nettyrest.provider;
 
 import javax.ws.rs.NotAuthorizedException;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -9,9 +8,9 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-
 import br.com.oktolab.netflixoss.nettyrest.exception.BusinessException;
+
+import com.google.gson.Gson;
 
 @Provider
 public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
@@ -29,7 +28,8 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		logByCause(realCause, message);
 		return Response.status(status)
 						.entity(gson.toJson(new Message(message)))
-						.type(MediaType.APPLICATION_JSON).build();
+//						.type(MediaType.APPLICATION_JSON).build();
+						.type("application/json;charset=UTF-8").build();
 	}
 
 	private void logByCause(final Throwable realCause, String message) {
@@ -41,14 +41,14 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		}
 	}
 
-	private String buildMessage(final Throwable realCause) {
-		if (realCause == null) {
+	private String buildMessage(final Throwable exception) {
+		if (exception == null) {
 			return null;
 		}
 //		if (realCause instanceof BusinessException) {
 			// TODO
 //		}
-		return realCause.getMessage();
+		return exception.getMessage();
 	}
 
 	private int buildStatusCode(final Throwable realCause) {
