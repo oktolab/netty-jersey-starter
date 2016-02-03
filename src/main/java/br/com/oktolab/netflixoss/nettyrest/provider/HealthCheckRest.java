@@ -3,7 +3,7 @@ package br.com.oktolab.netflixoss.nettyrest.provider;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-@Path("/health-check")
+@Path("/healthcheck")
 public class HealthCheckRest {
 
 	@GET
