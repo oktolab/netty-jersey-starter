@@ -16,9 +16,6 @@ import com.google.gson.JsonSerializer;
 
 public class GsonZonedDateTimeTypeAdapter implements JsonDeserializer<ZonedDateTime>, JsonSerializer<ZonedDateTime> {
 
-	private static final String DATE_WITH_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ";
-	private static final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern(DATE_WITH_TIME_PATTERN);
-	
 	@Override
 	public ZonedDateTime deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
@@ -32,7 +29,7 @@ public class GsonZonedDateTimeTypeAdapter implements JsonDeserializer<ZonedDateT
 	
 	private ZonedDateTime parseLocalDateTime(final String dateString) throws ParseException {
 	    if (dateString != null && dateString.trim().length() > 0) {
-	    	return ZonedDateTime.parse(dateString, dateTimeFormat);
+	    	return ZonedDateTime.parse(dateString, DateTimeFormatter.ISO_ZONED_DATE_TIME);
 	    } else { 
 	        return null; 
 	    } 
