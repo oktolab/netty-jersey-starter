@@ -1,5 +1,6 @@
 package br.com.oktolab.netflixoss.nettyrest.provider;
 
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -15,6 +16,7 @@ import com.google.gson.Gson;
 @Provider
 public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 	
+	private static final String APPLICATION_RESPONSE_TYPE = "application/json;charset=UTF-8";
 	private static final int UNPROCESSABLE_ENTITY = 422;
 	private static final Logger LOG = LoggerFactory.getLogger(ExceptionMapperProvider.class);
 	private static final String MSG_INTERNAL_SERVER_ERROR = "Internal server error. Message: '%s'";
@@ -28,13 +30,13 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		logByCause(realCause, message);
 		return Response.status(status)
 						.entity(gson.toJson(new Message(message)))
-//						.type(MediaType.APPLICATION_JSON).build();
-						.type("application/json;charset=UTF-8").build();
+						.type(APPLICATION_RESPONSE_TYPE).build();
 	}
 
 	private void logByCause(final Throwable realCause, String message) {
 		if (realCause instanceof BusinessException
-				|| realCause instanceof NotAuthorizedException) {
+				|| realCause instanceof NotAuthorizedException
+				|| realCause instanceof ForbiddenException) {
 			LOG.debug(String.format(MSG_INTERNAL_SERVER_ERROR, message), realCause);
 		} else {
 			LOG.error(String.format(MSG_INTERNAL_SERVER_ERROR, message), realCause);
@@ -54,6 +56,8 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 	private int buildStatusCode(final Throwable realCause) {
 		if (realCause instanceof NotAuthorizedException) {
 			return Response.Status.UNAUTHORIZED.getStatusCode();
+		} else if (realCause instanceof ForbiddenException) {
+			return Response.Status.FORBIDDEN.getStatusCode();
 		} else if (realCause instanceof BusinessException) {
 			return UNPROCESSABLE_ENTITY;
 		}
@@ -69,7 +73,6 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 			return getRealCause(parentEx);
 		}
 		return ex;
-//		return ex.getCause() != null ? getRealCause(ex.getCause()) : ex;
 	}
 	
 	class Message {
