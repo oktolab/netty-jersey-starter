@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -126,11 +129,16 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
         	try {
         		for (Entry<String, List<String>> param : params.entrySet()) {
         			String key = param.getKey();
+        			try {
+        				parameterClass.getDeclaredField(key);
+        			} catch (NoSuchFieldException e) {
+        				continue ;
+        			}
         			Object value = param.getValue().iterator().next();
         			if (mapToJson.containsKey(key)) {
         				Object valueAtMap = mapToJson.get(key);
-        				if (valueAtMap instanceof List) {
-        					((List)valueAtMap).add(value);
+        				if (valueAtMap instanceof Collection) {
+        					((Collection)valueAtMap).add(value);
         				} else {
         					ArrayList<Object> listToJson = new ArrayList<Object>();
         					listToJson.add(mapToJson.get(key));
@@ -138,7 +146,24 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
         					mapToJson.put(key, listToJson);
         				}
         			} else {
-        				mapToJson.put(key, value);
+        				if (Collection.class.isAssignableFrom(parameterClass.getDeclaredField(key).getType())) {
+        					if (value instanceof String) {
+        						String valueStr = (String) value;
+        						if (valueStr.startsWith("[") && valueStr.endsWith("]")) {
+        							Class<?> type = parameterClass.getDeclaredField(key).getType();
+        							mapToJson.put(key, gson.fromJson(valueStr, type));
+        						} else {
+        							Collection fieldInstance = getFieldInstance(parameterClass, key);
+        							fieldInstance.add(value);
+        							mapToJson.put(key, fieldInstance);
+        						}
+        						
+        					} else {
+        						mapToJson.put(key, value);
+        					}
+        				} else {
+        					mapToJson.put(key, value);
+        				}
         			}
         		}
         		String json = gson.toJson(mapToJson);
@@ -148,6 +173,17 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
         	}
             return instance;
         }
+
+		private Collection<?> getFieldInstance(Class<?> parameterClass, String key)
+				throws NoSuchFieldException {
+			Class<?> type = parameterClass.getDeclaredField(key).getType();
+			if (List.class.isAssignableFrom(type)) {
+				return new ArrayList<Object>();
+			} else if (Set.class.isAssignableFrom(type)) {
+				return new LinkedHashSet<Object>();
+			}
+			return new ArrayList<Object>();
+		}
     }
     
 }
