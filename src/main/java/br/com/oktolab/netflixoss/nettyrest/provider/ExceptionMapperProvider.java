@@ -29,11 +29,11 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		final String message = buildMessage(realCause);
 		logByCause(realCause, message);
 		return Response.status(status)
-						.entity(gson.toJson(new Message(message)))
+						.entity(message)
 						.type(APPLICATION_RESPONSE_TYPE).build();
 	}
 
-	private void logByCause(final Throwable realCause, String message) {
+	protected void logByCause(final Throwable realCause, String message) {
 		if (realCause instanceof BusinessException
 				|| realCause instanceof NotAuthorizedException
 				|| realCause instanceof ForbiddenException) {
@@ -43,17 +43,18 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		}
 	}
 
-	private String buildMessage(final Throwable exception) {
+	protected String buildMessage(final Throwable exception) {
 		if (exception == null) {
 			return null;
 		}
-//		if (realCause instanceof BusinessException) {
-			// TODO
-//		}
+		if (exception instanceof BusinessException) {
+			BusinessException businessException = (BusinessException) exception;
+			return gson.toJson(businessException.getValue());
+		}
 		return exception.getMessage();
 	}
 
-	private int buildStatusCode(final Throwable realCause) {
+	protected int buildStatusCode(final Throwable realCause) {
 		if (realCause instanceof NotAuthorizedException) {
 			return Response.Status.UNAUTHORIZED.getStatusCode();
 		} else if (realCause instanceof ForbiddenException) {
@@ -64,7 +65,7 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		return Response.Status.INTERNAL_SERVER_ERROR.getStatusCode();
 	}
 
-	private Throwable getRealCause(Throwable ex) {
+	protected Throwable getRealCause(Throwable ex) {
 		Throwable parentEx = ex.getCause();
 		if (parentEx != null) {
 			if (ex == parentEx) {
@@ -75,12 +76,4 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		return ex;
 	}
 	
-	class Message {
-		String message;
-		
-		Message(String message) {
-			this.message = message;
-		}
-	}
-
 }
