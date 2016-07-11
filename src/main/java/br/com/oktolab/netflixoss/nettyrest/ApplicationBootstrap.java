@@ -3,7 +3,6 @@ package br.com.oktolab.netflixoss.nettyrest;
 import netflix.karyon.Karyon;
 import netflix.karyon.KaryonServer;
 import netflix.karyon.ShutdownModule;
-import netflix.karyon.servo.KaryonServoModule;
 
 import org.apache.commons.lang.ArrayUtils;
 
@@ -54,8 +53,8 @@ public class ApplicationBootstrap {
 	protected static Module[] defaultModules() {
 		return new Module[]{
 //				getShutdownModule(),
-				new KaryonJerseyModuleImpl(),
-		        new KaryonServoModule()};
+				new KaryonJerseyModuleImpl()};
+//		        new KaryonServoModule()};
 	}
 
 	private static Module getShutdownModule() {
