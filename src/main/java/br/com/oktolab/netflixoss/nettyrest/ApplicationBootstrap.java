@@ -2,14 +2,12 @@ package br.com.oktolab.netflixoss.nettyrest;
 
 import netflix.karyon.Karyon;
 import netflix.karyon.KaryonServer;
-import netflix.karyon.ShutdownModule;
 
 import org.apache.commons.lang.ArrayUtils;
 
 import br.com.oktolab.netflixoss.nettyrest.module.KaryonJerseyModuleImpl;
 
 import com.google.inject.Module;
-import com.netflix.config.ConfigurationManager;
 import com.netflix.config.DynamicPropertyFactory;
 
 public class ApplicationBootstrap {
@@ -57,9 +55,9 @@ public class ApplicationBootstrap {
 //		        new KaryonServoModule()};
 	}
 
-	private static Module getShutdownModule() {
-		int shutdownPort = ConfigurationManager.getConfigInstance().getInt("shutdown.port", 7002);
-		return (Module) new ShutdownModule(shutdownPort){};
-	}
+//	private static Module getShutdownModule() {
+//		int shutdownPort = ConfigurationManager.getConfigInstance().getInt("shutdown.port", 7002);
+//		return (Module) new ShutdownModule(shutdownPort){};
+//	}
 	
 }
