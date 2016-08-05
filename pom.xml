@@ -4,7 +4,7 @@
 	<!-- TODO OKTOLAB-PUBLIC -->
 	<groupId>br.com.oktolab.netflixoss</groupId>
 	<artifactId>netty-jersey-starter</artifactId>
-	<version>0.1.1</version>
+	<version>1.0.0</version>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -55,6 +55,11 @@
 	</build>
 
 	<dependencies>
+		<dependency>
+			<groupId>br.com.oktolab.gson</groupId>
+			<artifactId>gson-utils</artifactId>
+			<version>0.0.5</version>
+		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-codec-http</artifactId>
