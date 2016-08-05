@@ -5,10 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -21,26 +17,11 @@ import javax.ws.rs.ext.Provider;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonDateTypeAdapter;
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTimeTypeAdapter;
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTypeAdapter;
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonZonedDateTimeTypeAdapter;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import br.com.oktolab.gson.GSON;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Provider
 public class RestMessagePostProvider implements MessageBodyWriter<Object>, MessageBodyReader<Object> {
-
-	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-	private static final Gson gson = new GsonBuilder()
-								.setDateFormat(DATE_FORMAT)
-								.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
-								.registerTypeAdapter(LocalDate.class, new GsonLocalDateTypeAdapter())
-								.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
-								.registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTimeTypeAdapter())
-								.create();
 
     @Override
     public long getSize(Object t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
@@ -56,7 +37,7 @@ public class RestMessagePostProvider implements MessageBodyWriter<Object>, Messa
     @Override
     public void writeTo(Object t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
-        String json = gson.toJson(t);
+        String json = GSON.getGson().toJson(t);
         entityStream.write(json.getBytes());
     }
 
@@ -71,7 +52,7 @@ public class RestMessagePostProvider implements MessageBodyWriter<Object>, Messa
             MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
         String json = IOUtils.toString(entityStream);
         if (StringUtils.isNotBlank(json)) {
-        	return gson.fromJson(json, type);
+        	return GSON.getGson().fromJson(json, type);
         }
         return null;
     }

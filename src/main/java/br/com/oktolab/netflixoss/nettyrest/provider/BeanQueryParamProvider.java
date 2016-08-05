@@ -1,11 +1,7 @@
 package br.com.oktolab.netflixoss.nettyrest.provider;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -31,14 +27,8 @@ import org.glassfish.jersey.server.model.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.oktolab.gson.GSON;
 import br.com.oktolab.netflixoss.nettyrest.provider.annotation.BeanQueryParam;
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonDateTypeAdapter;
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTimeTypeAdapter;
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonLocalDateTypeAdapter;
-import br.com.oktolab.netflixoss.nettyrest.type.adapter.GsonZonedDateTimeTypeAdapter;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Provider
@@ -88,15 +78,6 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
     
     
     private static final class BeanQueryParamValueFactory extends AbstractContainerRequestValueFactory<Object> {
-    	
-    	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-    	private static final Gson gson = new GsonBuilder()
-    								.setDateFormat(DATE_FORMAT)
-    								.registerTypeAdapter(Date.class, new GsonDateTypeAdapter())
-    								.registerTypeAdapter(LocalDate.class, new GsonLocalDateTypeAdapter())
-    								.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeTypeAdapter())
-    								.registerTypeAdapter(ZonedDateTime.class, new GsonZonedDateTimeTypeAdapter())
-    								.create();
     	
         private final Parameter parameter;
         private final ServiceLocator locator;
@@ -151,7 +132,7 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
         						String valueStr = (String) value;
         						if (valueStr.startsWith("[") && valueStr.endsWith("]")) {
         							Class<?> type = parameterClass.getDeclaredField(key).getType();
-        							mapToJson.put(key, gson.fromJson(valueStr, type));
+        							mapToJson.put(key, GSON.getGson().fromJson(valueStr, type));
         						} else {
         							Collection fieldInstance = getFieldInstance(parameterClass, key);
         							fieldInstance.add(value);
@@ -166,8 +147,8 @@ public class BeanQueryParamProvider extends AbstractValueFactoryProvider {
         				}
         			}
         		}
-        		String json = gson.toJson(mapToJson);
-        		instance = gson.fromJson(json, parameterClass);
+        		String json = GSON.getGson().toJson(mapToJson);
+        		instance = GSON.getGson().fromJson(json, parameterClass);
         	} catch (Exception e) {
         		LOG.error(String.format(MSG_ERROR_QUERY_PARAMS, parameterClass, params), e);
         	}

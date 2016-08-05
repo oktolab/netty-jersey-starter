@@ -9,9 +9,8 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.oktolab.gson.GSON;
 import br.com.oktolab.netflixoss.nettyrest.exception.BusinessException;
-
-import com.google.gson.Gson;
 
 @Provider
 public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
@@ -20,7 +19,6 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 	private static final int UNPROCESSABLE_ENTITY = 422;
 	private static final Logger LOG = LoggerFactory.getLogger(ExceptionMapperProvider.class);
 	private static final String MSG_INTERNAL_SERVER_ERROR = "Internal server error. Message: '%s'";
-	private static final Gson gson = new Gson();
 	
 	@Override
 	public Response toResponse(final Throwable ex) {
@@ -49,7 +47,7 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 		}
 		if (exception instanceof BusinessException) {
 			BusinessException businessException = (BusinessException) exception;
-			return gson.toJson(businessException.getValue());
+			return GSON.getGson().toJson(businessException.getValue());
 		}
 		return exception.getMessage();
 	}
