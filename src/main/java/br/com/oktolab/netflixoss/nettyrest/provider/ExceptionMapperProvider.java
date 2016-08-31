@@ -1,7 +1,9 @@
 package br.com.oktolab.netflixoss.nettyrest.provider;
 
 import javax.ws.rs.ForbiddenException;
+import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -32,7 +34,9 @@ public class ExceptionMapperProvider implements ExceptionMapper<Throwable> {
 	}
 
 	protected void logByCause(final Throwable realCause, String message) {
-		if (realCause instanceof BusinessException
+		if (realCause instanceof NotFoundException
+				|| realCause instanceof NotAllowedException
+				|| realCause instanceof BusinessException
 				|| realCause instanceof NotAuthorizedException
 				|| realCause instanceof ForbiddenException) {
 			LOG.debug(String.format(MSG_INTERNAL_SERVER_ERROR, message), realCause);
