@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -14,6 +15,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -46,11 +48,17 @@ public class RestMessagePostProvider implements MessageBodyWriter<Object>, Messa
         return true;
     }
 
-    // javascript -> encodeURIComponent(JSON.stringify(object_to_be_serialised))
     @Override
     public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
-        String json = IOUtils.toString(entityStream);
+    	Charset charset = null;
+    	if (mediaType != null && mediaType.getParameters() != null
+    			&& mediaType.getParameters().containsKey("charset")) {
+    		charset = Charsets.toCharset(mediaType.getParameters().get("charset"));
+    	} else {
+    		charset = Charsets.UTF_8;
+    	}
+        String json = IOUtils.toString(entityStream, charset);
         if (StringUtils.isNotBlank(json)) {
         	return GSON.getGson().fromJson(json, type);
         }
